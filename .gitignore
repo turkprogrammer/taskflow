@@ -1,0 +1,13 @@
+/vendor/
+/taskflow
+/taskflow.exe
+config.yaml
+*.exe
+*.log
+.env
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage.out
+coverage

@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+db:
+  host: localhost
+  port: 3306
+  user: taskflow
+  password: taskflow
+  name: taskflow
+  max_open_conns: 25
+  max_idle_conns: 10
+  max_lifetime_seconds: 300
+
+redis:
+  addr: localhost:6379
+  password: ""
+  db: 0
+
+jwt:
+  secret: change-me-in-production
+  ttl_hours: 72
