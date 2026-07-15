@@ -54,6 +54,8 @@
 | idx_tasks_team_status | tasks | (team_id, status) | ✅ |
 | idx_tasks_assignee_status | tasks | (assignee_id, status) | ✅ |
 | uq_team_member | team_members | (team_id, user_id) UNIQUE | ✅ |
+| idx_team_members_team_id | team_members | (team_id) | ✅ |
+| idx_team_members_user_id | team_members | (user_id) | ✅ |
 | idx_team_members_role | team_members | (role) | ✅ |
 | idx_task_history_task_id | task_history | (task_id) | ✅ |
 | idx_task_history_created_at | task_history | (created_at) | ✅ |
@@ -65,7 +67,7 @@
 | idx_tasks_assignee_id | tasks | (assignee_id) | ✅ |
 | idx_tasks_status | tasks | (status) | ✅ |
 | idx_tasks_created_by | tasks | (created_by) | ✅ |
-| **ИТОГО** | | **15 индексов** | ✅ |
+| **ИТОГО** | | **16 индексов** | ✅ |
 
 ---
 
@@ -311,7 +313,7 @@ config.example.yaml      — Шаблон конфигурации
 | Раздел ТЗ | Требований | Выполнено | Статус |
 |-----------|------------|-----------|--------|
 | Стек технологий | 5 | 5 | ✅ |
-| Структура БД | 6 таблиц + 10 FK + индексы | 6 + 10 + 15 | ✅ |
+| Структура БД | 6 таблиц + 10 FK + индексы | 6 + 10 + 16 | ✅ |
 | API эндпоинты | 12 + 2 observability | 14 | ✅ |
 | Сложные SQL | 3 запроса | 3 | ✅ |
 | Оптимизация | 4 пункта | 4 | ✅ |

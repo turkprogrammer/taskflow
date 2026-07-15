@@ -356,7 +356,7 @@ WHERE t.assignee_id IS NOT NULL
 | Компонент | Реализация |
 |-----------|------------|
 | Redis кеш | Список команд пользователя + список задач команды, TTL 5 мин, инвалидация при мутациях |
-| Индексы | 15 индексов, включая составные (team_id, status), (assignee_id, status) |
+| Индексы | 16 индексов, включая составные (team_id, status), (assignee_id, status) |
 | Connection pooling | MaxOpenConns=25, MaxIdleConns=10, MaxLifetime=300с |
 | Пагинация | LIMIT/OFFSET на уровне БД |
 
@@ -394,6 +394,8 @@ go test ./internal/store/...
 ```
 cmd/api/
   main.go                 — Точка входа, wire-up компонентов
+  db.go                   — initDB, initRedis, connection pool
+  server.go               — registerRoutes, runServer, shutdown, withLogging
   migrations/             — SQL миграции (goose)
 
 internal/
