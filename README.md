@@ -58,6 +58,35 @@ task_comments.user_id   → users.id
 
 ## Архитектура приложения
 
+Проект построен на **трёхуровневой архитектуре** (Handler → Service → Store) с ручным constructor injection — без DI-контейнеров, ORM или лишних абстракций. Каждый слой имеет ровно одну ответственность и тестируется независимо.
+
+- **Handler Layer** — принимает HTTP-запросы, парсит параметры, возвращает JSON. Без бизнес-логики. Хендлер получает сервис через конструктор.
+- **Service Layer** — бизнес-логика: валидация прав (проверка членства в команде, ролевая модель), координация между store-запросами. Нет прямого доступа к БД — только через Store interface.
+- **Store Layer** — доступ к данным (MySQL) и кеш (Redis). Чистые SQL-запросы без ORM. Единственный слой, который знает о БД.
+
+Сборка компонентов происходит в `main()` — это единственное место, где слои пересекаются:
+
+```
+main()
+  → config.Load()                # конфигурация (YAML + ENV)
+  → initDB(), initRedis()        # подключение к MySQL + Redis
+  → NewUserStore(db)             # Store layer
+  → NewTeamStore(db, rdb)
+  → NewTaskStore(db, rdb)
+  → NewReportStore(db)
+  → NewAuthService(userStore)    # Service layer (через интерфейсы)
+  → NewTeamService(teamStore)
+  → NewTaskService(taskStore)
+  → NewAuthHandler(authSvc)      # Handler layer (через сервисы)
+  → NewTeamHandler(teamSvc)
+  → NewTaskHandler(taskSvc)
+  → NewReportHandler(reportStore)
+  → registerRoutes()             # привязка к http.ServeMux
+  → runServer()                  # запуск + graceful shutdown
+```
+
+Разделение подтверждено статическим анализом: три слоя формируют изолированные кластеры зависимостей, а `main()` выступает единственным «мостом» между ними.
+
 ### Трёхуровневая архитектура
 
 ```
